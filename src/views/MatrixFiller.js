@@ -1,6 +1,8 @@
 import React from "react";
 import Select2 from "react-select2-wrapper";
 
+import { getAverage } from "../pressets";
+
 const numPlayers = 4;
 const initValues = [
   [3, 3, 3, 3],
@@ -44,7 +46,7 @@ export default class MatrixFiller extends React.Component {
     this.state = {
       matrix: initValues,
       team: ["Adeptus Custodes", "Chaos Daemons", "Craftworlds", "Tau Empire"],
-      rivals: ["", "", "", ""],
+      rivals: [],
     };
   }
 
@@ -125,10 +127,12 @@ export default class MatrixFiller extends React.Component {
             </div>
           );
         })}
+        <label style={{ marginLeft: "15%", marginTop: "2.5%", marginRight: "10%", color: "#ffff55" }}>
+          Round Average: {getAverage(matrix)}
+        </label>
         <button
           type="button"
-          className="btnNext"
-          disabled={this.state.rivals.filter((item) => item && item.length).length < 4}
+          // disabled={this.state.rivals.filter((item) => item && item.length).length < 4}
           onClick={() => {
             this.props.next({ ...this.state });
           }}

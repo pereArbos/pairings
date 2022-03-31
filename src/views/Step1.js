@@ -14,9 +14,7 @@ export default class MatrixFiller extends React.Component {
     return (
       <div className="step1">
         hola
-        <button type="button" className="btnNext">
-          Next
-        </button>
+        <button type="button">Next</button>
       </div>
     );
   }
