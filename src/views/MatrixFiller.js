@@ -3,13 +3,6 @@ import Select2 from "react-select2-wrapper";
 
 import { getAverage } from "../pressets";
 
-const numPlayers = 4;
-const initValues = [
-  [3, 3, 3, 3],
-  [3, 3, 3, 3],
-  [3, 3, 3, 3],
-  [3, 3, 3, 3],
-];
 const topValue = 5;
 const factions = [
   "Adepta Sororitas",
@@ -29,7 +22,7 @@ const factions = [
   "Drukhari",
   "Genestealer Cults",
   "Grey Knights",
-  "Hatlequins",
+  "Harlequins",
   "Imperial Knights",
   "Necrons",
   "Orks",
@@ -43,11 +36,7 @@ const factions = [
 export default class MatrixFiller extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      matrix: initValues,
-      team: ["Adeptus Custodes", "Chaos Daemons", "Craftworlds", "Tau Empire"],
-      rivals: [],
-    };
+    this.state = { ...props };
   }
 
   getSelector = (i, j) => {
@@ -89,6 +78,7 @@ export default class MatrixFiller extends React.Component {
 
   render() {
     const { matrix } = this.state;
+    const { numPlayers } = this.props;
     return (
       <div className="matrix">
         {[...Array(numPlayers + 1).keys()].map((i) => {
@@ -132,7 +122,7 @@ export default class MatrixFiller extends React.Component {
         </label>
         <button
           type="button"
-          // disabled={this.state.rivals.filter((item) => item && item.length).length < 4}
+          disabled={this.state.rivals.filter((item) => item && item.length).length < 4}
           onClick={() => {
             this.props.next({ ...this.state });
           }}

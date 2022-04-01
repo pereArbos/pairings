@@ -1,20 +1,57 @@
 import React from "react";
+import Select2 from "react-select2-wrapper";
 
-const numPlayers = 4;
-const topValue = 5;
+import { defenderChoices } from "../algorithm";
 
-export default class MatrixFiller extends React.Component {
+export default class Step1 extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    const { matrix, numPlayers } = props;
+    const numArray = [...Array(numPlayers).keys()];
+
+    console.log(defenderChoices([numArray, numArray], matrix));
+    this.state = { ...props };
   }
 
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
+  getListFormat = (list) => {
+    return list.map((text, id) => ({ id, text }));
+  };
+
   render() {
-    console.log(this.props);
+    const { escudo, escudoRival } = this.state;
+    const { team, rivals } = this.props;
     return (
-      <div className="step1">
-        hola
-        <button type="button">Next</button>
+      <div className="step">
+        <h2>Elegir Escudo</h2>
+        <h3>Tu escudo</h3>
+        <Select2 name="escudo" value={escudo} data={this.getListFormat(team)} onChange={this.handleChange} />
+        <h3>Escudo del rival</h3>
+        <Select2
+          name="escudoRival"
+          value={escudoRival}
+          data={this.getListFormat(rivals)}
+          onChange={this.handleChange}
+        />
+        <br />
+        <br />
+        <button type="button" onClick={this.props.back} style={{ marginRight: "20%" }}>
+          Back
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            this.props.next({ ...this.state });
+          }}
+          disabled={!escudo || !escudoRival}
+        >
+          Next
+        </button>
       </div>
     );
   }

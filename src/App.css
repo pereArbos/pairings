@@ -81,3 +81,12 @@ button:hover {
   font-size: 20px;
   height: 5vh;
 }
+
+.step {
+  padding-left: 20px;
+}
+
+.step > select {
+  width: 60%;
+  height: 3vw;
+}
