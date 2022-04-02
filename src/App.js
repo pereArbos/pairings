@@ -10,10 +10,10 @@ import "./App.css";
 const steps = [MatrixFiller, Step1, Step2, Step3];
 const numPlayers = 4;
 const initValues = [
-  [1, 4, 2, 3],
-  [5, 4, 1, 3],
-  [5, 2, 2, 4],
-  [3, 3, 1, 5],
+  [3, 3, 3, 3],
+  [3, 3, 3, 3],
+  [3, 3, 3, 3],
+  [3, 3, 3, 3],
 ];
 
 export default class App extends React.Component {
@@ -24,7 +24,7 @@ export default class App extends React.Component {
       numPlayers,
       matrix: initValues,
       team: ["Adeptus Custodes", "Chaos Daemons", "Craftworlds", "Tau Empire"],
-      rivals: ["Harlequins", "Tau Empire", "Tyranids", "Drukhari"],
+      rivals: ["", "", "", ""],
     };
   }
 
