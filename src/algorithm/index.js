@@ -49,3 +49,23 @@ export function defenderChoices(remaining, matrix) {
     });
   });
 }
+
+export function solveGame(choices) {
+  const choiceIdxs = [...Array(choices.length).keys()];
+  const filtered = choiceIdxs.filter((i) => !isOutclassed(choices[i], choices));
+  console.log(filtered);
+}
+
+function isOutclassed(row, matrix) {
+  let outClassed = false;
+  matrix.forEach((row2) => {
+    let noneLower = true;
+    let allEqual = true;
+    row2.forEach((value, idx) => {
+      if (value < row[idx]) noneLower = false;
+      if (value !== row[idx]) allEqual = false;
+    });
+    if (noneLower && !allEqual) outClassed = true;
+  });
+  return outClassed;
+}

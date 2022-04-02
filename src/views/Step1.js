@@ -1,7 +1,7 @@
 import React from "react";
 import Select2 from "react-select2-wrapper";
 
-import { defenderChoices } from "../algorithm";
+import { defenderChoices, solveGame } from "../algorithm";
 
 export default class Step1 extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export default class Step1 extends React.Component {
     const { matrix, numPlayers } = props;
     const numArray = [...Array(numPlayers).keys()];
 
-    console.log(defenderChoices([numArray, numArray], matrix));
+    this.choices = defenderChoices([numArray, numArray], matrix);
     this.state = { ...props };
   }
 
@@ -23,12 +23,25 @@ export default class Step1 extends React.Component {
     return list.map((text, id) => ({ id, text }));
   };
 
+  printChoices = () => {
+    return this.choices.map((row) => {
+      return (
+        <div>
+          {row.map((value) => (
+            <span style={{ marginRight: "20px" }}>{value}</span>
+          ))}
+        </div>
+      );
+    });
+  };
+
   render() {
     const { escudo, escudoRival } = this.state;
     const { team, rivals } = this.props;
     return (
       <div className="step">
         <h2>Elegir Escudo</h2>
+        {this.printChoices()}
         <h3>Tu escudo</h3>
         <Select2 name="escudo" value={escudo} data={this.getListFormat(team)} onChange={this.handleChange} />
         <h3>Escudo del rival</h3>

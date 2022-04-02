@@ -19,7 +19,8 @@ export default class Step3 extends React.Component {
     const defenders = [parseInt(escudo, 10), parseInt(escudoRival, 10)];
     const score = matrix[parseInt(descarte, 10)][parseInt(descarteRival, 10)];
 
-    console.log(attackerChoices(defenders, this.state.remaining, matrix, score));
+    this.choices = attackerChoices(defenders, this.state.remaining, matrix, score);
+    this.forceUpdate();
   }
 
   getList = () => {
@@ -31,6 +32,18 @@ export default class Step3 extends React.Component {
     this.setState({ [name]: value });
   };
 
+  printChoices = () => {
+    return (this.choices || []).map((row) => {
+      return (
+        <div>
+          {row.map((value) => (
+            <span style={{ marginRight: "20px" }}>{value}</span>
+          ))}
+        </div>
+      );
+    });
+  };
+
   render() {
     const { atacante } = this.state;
     const { team, escudo } = this.props;
@@ -38,6 +51,7 @@ export default class Step3 extends React.Component {
     return (
       <div className="step">
         <h2>Elegir Atacante </h2>
+        {this.printChoices()}
         <h3>Elige un atacante del rival contra tu escudo ({team[escudo]})</h3>
         <Select2 name="atacante" value={atacante} data={this.getList()} onChange={this.handleChange} />
         <br />

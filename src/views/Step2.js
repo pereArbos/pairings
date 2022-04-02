@@ -6,7 +6,6 @@ import { discardChoices } from "../algorithm";
 export default class Step2 extends React.Component {
   constructor(props) {
     super(props);
-
     const { numPlayers, escudo, escudoRival } = props;
     const numArray = [...Array(numPlayers).keys()];
     const remaining = [];
@@ -20,7 +19,8 @@ export default class Step2 extends React.Component {
     const { matrix, escudo, escudoRival } = this.props;
     const defenders = [parseInt(escudo, 10), parseInt(escudoRival, 10)];
 
-    console.log(discardChoices(defenders, this.state.remaining, matrix));
+    this.choices = discardChoices(defenders, this.state.remaining, matrix);
+    this.forceUpdate();
   }
 
   handleChange = (e) => {
@@ -36,6 +36,18 @@ export default class Step2 extends React.Component {
     return this.state.remaining[1].map((id) => ({ id, text: this.props.rivals[id] }));
   };
 
+  printChoices = () => {
+    return (this.choices || []).map((row) => {
+      return (
+        <div>
+          {row.map((value) => (
+            <span style={{ marginRight: "20px" }}>{value}</span>
+          ))}
+        </div>
+      );
+    });
+  };
+
   render() {
     const { descarte, descarteRival } = this.state;
     const { team, rivals, escudo, escudoRival } = this.props;
@@ -43,6 +55,7 @@ export default class Step2 extends React.Component {
     return (
       <div className="step">
         <h2>Elegir Descarte (los dos restantes serán los atacantes)</h2>
+        {this.printChoices()}
         <h3>Tu descarte contra el escudo del rival ({rivals[escudoRival]})</h3>
         <Select2 name="descarte" value={descarte} data={this.getList()} onChange={this.handleChange} />
         <h3>Descarte del rival (tu escudo: {team[escudo]})</h3>
