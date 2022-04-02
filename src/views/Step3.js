@@ -33,11 +33,13 @@ export default class Step3 extends React.Component {
   };
 
   printChoices = () => {
-    return (this.choices || []).map((row) => {
+    const players = this.getList();
+    return (this.choices || []).map((row, i) => {
       return (
         <div>
+          <span style={{ width: "200px", display: "inline-block" }}>{players[i].text}</span>
           {row.map((value) => (
-            <span style={{ marginRight: "20px" }}>{value}</span>
+            <span style={{ width: "50px", display: "inline-block" }}>{value}</span>
           ))}
         </div>
       );

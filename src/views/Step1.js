@@ -24,11 +24,13 @@ export default class Step1 extends React.Component {
   };
 
   printChoices = () => {
-    return this.choices.map((row) => {
+    const players = this.getListFormat(this.props.team);
+    return (this.choices || []).map((row, i) => {
       return (
         <div>
+          <span style={{ width: "200px", display: "inline-block" }}>{players[i].text}</span>
           {row.map((value) => (
-            <span style={{ marginRight: "20px" }}>{value}</span>
+            <span style={{ width: "50px", display: "inline-block" }}>{value}</span>
           ))}
         </div>
       );
@@ -41,9 +43,11 @@ export default class Step1 extends React.Component {
     return (
       <div className="step">
         <h2>Elegir Escudo</h2>
-        {this.printChoices()}
         <h3>Tu escudo</h3>
         <Select2 name="escudo" value={escudo} data={this.getListFormat(team)} onChange={this.handleChange} />
+        <br />
+        <br />
+        {this.printChoices()}
         <h3>Escudo del rival</h3>
         <Select2
           name="escudoRival"

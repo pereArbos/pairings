@@ -37,11 +37,13 @@ export default class Step2 extends React.Component {
   };
 
   printChoices = () => {
-    return (this.choices || []).map((row) => {
+    const players = this.getList();
+    return (this.choices || []).map((row, i) => {
       return (
         <div>
+          <span style={{ width: "200px", display: "inline-block" }}>{players[i].text}</span>
           {row.map((value) => (
-            <span style={{ marginRight: "20px" }}>{value}</span>
+            <span style={{ width: "50px", display: "inline-block" }}>{value}</span>
           ))}
         </div>
       );
@@ -55,9 +57,11 @@ export default class Step2 extends React.Component {
     return (
       <div className="step">
         <h2>Elegir Descarte (los dos restantes serán los atacantes)</h2>
-        {this.printChoices()}
         <h3>Tu descarte contra el escudo del rival ({rivals[escudoRival]})</h3>
         <Select2 name="descarte" value={descarte} data={this.getList()} onChange={this.handleChange} />
+        <br />
+        <br />
+        {this.printChoices()}
         <h3>Descarte del rival (tu escudo: {team[escudo]})</h3>
         <Select2 name="descarteRival" value={descarteRival} data={this.getRivalList()} onChange={this.handleChange} />
         <br />
