@@ -56,8 +56,8 @@ export default class App extends React.Component {
       step: 1,
       numPlayers,
       matrix: initValues,
-      team: ["A", "B", "C", "D", "E", "F"],
-      rivals: ["Z", "Y", "X", "W", "V", "U"],
+      team: ["GI", "DA", "IH", "DW", "IK", "CK"],
+      rivals: ["GI", "DA", "IH", "DW", "IK", "CK"],
     };
   }
 

@@ -55,17 +55,29 @@ export default class Step2 extends React.Component {
     const rivalOptions = this.getPairOptions(remaining[1], rivals);
     return [
       <div>
-        <span style={{ width: "120px", display: "inline-block" }}></span>
-        {rivalOptions.map((item) => (
-          <span style={{ width: "120px", display: "inline-block" }}>{item}</span>
-        ))}
+        <span style={{ width: "100px", display: "inline-block" }}></span>
+        {rivalOptions.map((item) => {
+          const rivalArmies = item.split(" ");
+          return (
+            <span style={{ width: "100px", display: "inline-block" }}>
+              {rivalArmies.map((army) => (
+                <img style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
+              ))}
+            </span>
+          );
+        })}
       </div>,
       (this.choices || []).map((row, i) => {
+        const armies = playerOptions[i].split(" ");
         return (
           <div>
-            <span style={{ width: "120px", display: "inline-block" }}>{playerOptions[i]}</span>
+            <span style={{ width: "100px", display: "inline-block" }}>
+              {armies.map((army) => (
+                <img style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
+              ))}
+            </span>
             {row.map((value) => (
-              <span style={{ width: "120px", display: "inline-block" }}>{value}</span>
+              <span style={{ width: "100px", display: "inline-block" }}>{value}</span>
             ))}
           </div>
         );
