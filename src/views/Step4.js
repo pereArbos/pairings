@@ -50,6 +50,7 @@ export default class Step4 extends React.Component {
         <br />
         <button
           type="button"
+          className="button-footer"
           onClick={() => {
             this.props.next({ ...this.state });
           }}

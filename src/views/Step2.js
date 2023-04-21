@@ -108,7 +108,7 @@ export default class Step2 extends React.Component {
         <Select2 name="espadaRival2" value={espadaRival2} data={rivalList} onChange={this.handleChange} />
         <br />
         <br />
-        <button type="button" disabled={disableNext} onClick={this.goNext}>
+        <button className="button-footer" type="button" disabled={disableNext} onClick={this.goNext}>
           Next
         </button>
       </div>

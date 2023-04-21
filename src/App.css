@@ -90,3 +90,7 @@ button:hover {
   width: 60%;
   height: 3vw;
 }
+
+.button-footer {
+  margin-bottom: 10px;
+}

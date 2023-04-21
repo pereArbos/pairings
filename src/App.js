@@ -53,7 +53,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1,
+      step: 0,
       numPlayers,
       matrix: initValues,
       team: ["GI", "DA", "IH", "DW", "IK", "CK"],

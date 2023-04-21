@@ -74,7 +74,7 @@ export default class Step3 extends React.Component {
         />
         <br />
         <br />
-        <button type="button" onClick={this.goNext} disabled={!atacante || !atacanteRival}>
+        <button className="button-footer" type="button" onClick={this.goNext} disabled={!atacante || !atacanteRival}>
           Next
         </button>
       </div>
