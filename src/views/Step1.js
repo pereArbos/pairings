@@ -1,9 +1,10 @@
 import React from "react";
 import Select2 from "react-select2-wrapper";
 
-import { defenderChoices, solveGame } from "../algorithm";
+import { defenderChoices } from "../algorithm";
+import { renderChoices } from "../pressets/AuxRenderer";
 
-export default class Step1 extends React.Component {
+export default class Step4 extends React.Component {
   constructor(props) {
     super(props);
 
@@ -11,6 +12,7 @@ export default class Step1 extends React.Component {
     const numArray = [...Array(numPlayers).keys()];
 
     this.choices = defenderChoices([numArray, numArray], matrix);
+    this.sums = defenderChoices([numArray, numArray], matrix, false, 0, true);
     this.state = { ...props };
   }
 
@@ -24,17 +26,14 @@ export default class Step1 extends React.Component {
   };
 
   printChoices = () => {
-    const players = this.getListFormat(this.props.team);
-    return (this.choices || []).map((row, i) => {
-      return (
-        <div>
-          <span style={{ width: "200px", display: "inline-block" }}>{players[i].text}</span>
-          {row.map((value) => (
-            <span style={{ width: "50px", display: "inline-block" }}>{value}</span>
-          ))}
-        </div>
-      );
-    });
+    const { team, rivals } = this.props;
+    const options = this.getListFormat(team);
+    const rivalOptions = this.getListFormat(rivals);
+    return [
+      renderChoices(options, rivalOptions, this.choices),
+      <br />,
+      renderChoices(options, rivalOptions, this.sums),
+    ];
   };
 
   render() {
@@ -43,11 +42,11 @@ export default class Step1 extends React.Component {
     return (
       <div className="step">
         <h2>Elegir Escudo</h2>
+        {this.printChoices()}
         <h3>Tu escudo</h3>
         <Select2 name="escudo" value={escudo} data={this.getListFormat(team)} onChange={this.handleChange} />
         <br />
         <br />
-        {this.printChoices()}
         <h3>Escudo del rival</h3>
         <Select2
           name="escudoRival"
@@ -57,9 +56,6 @@ export default class Step1 extends React.Component {
         />
         <br />
         <br />
-        <button type="button" onClick={this.props.back} style={{ marginRight: "20%" }}>
-          Back
-        </button>
         <button
           type="button"
           onClick={() => {

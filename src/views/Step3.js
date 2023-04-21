@@ -1,30 +1,38 @@
 import React from "react";
 import Select2 from "react-select2-wrapper";
-import { attackerChoices } from "../algorithm";
+import { attackerPairing } from "../algorithm";
+import { renderChoices } from "../pressets/AuxRenderer";
 
 export default class Step3 extends React.Component {
   constructor(props) {
     super(props);
 
-    const { descarte, descarteRival } = props;
     const remaining = [...props.remaining];
-    remaining[0] = remaining[0].filter((player) => player != descarte);
-    remaining[1] = remaining[1].filter((player) => player != descarteRival);
 
-    this.state = { ...props, remaining };
+    this.state = {
+      ...props,
+      remaining: [
+        remaining[0].filter((item) => !props.espadas.includes(item)),
+        remaining[1].filter((item) => !props.espadasRival.includes(item)),
+      ],
+    };
   }
 
   componentDidMount() {
-    const { matrix, escudo, escudoRival, descarte, descarteRival } = this.props;
+    const { matrix, escudo, escudoRival, espadas, espadasRival } = this.state;
     const defenders = [parseInt(escudo, 10), parseInt(escudoRival, 10)];
-    const score = matrix[parseInt(descarte, 10)][parseInt(descarteRival, 10)];
+    const attackers = [espadas, espadasRival];
 
-    this.choices = attackerChoices(defenders, this.state.remaining, matrix, score);
+    this.choices = attackerPairing(defenders, attackers, matrix);
     this.forceUpdate();
   }
 
-  getList = () => {
-    return this.state.remaining[1].map((id) => ({ id, text: this.props.rivals[id] }));
+  getOptionList = () => {
+    return this.state.espadasRival.map((item, idx) => ({ id: idx, text: this.props.rivals[item] }));
+  };
+
+  getRivalOptions = () => {
+    return this.state.espadas.map((item, idx) => ({ id: idx, text: this.props.team[item] }));
   };
 
   handleChange = (e) => {
@@ -32,34 +40,42 @@ export default class Step3 extends React.Component {
     this.setState({ [name]: value });
   };
 
-  printChoices = () => {
-    const players = this.getList();
-    return (this.choices || []).map((row, i) => {
-      return (
-        <div>
-          <span style={{ width: "200px", display: "inline-block" }}>{players[i].text}</span>
-          {row.map((value) => (
-            <span style={{ width: "50px", display: "inline-block" }}>{value}</span>
-          ))}
-        </div>
-      );
+  goNext = () => {
+    const { atacante, atacanteRival } = this.state;
+    this.setState({ score: this.choices[atacante][atacanteRival] }, () => {
+      this.props.next({ ...this.state });
     });
   };
 
+  printChoices = () => {
+    const options = this.getOptionList();
+    const rivalOptions = this.getRivalOptions();
+    return renderChoices(options, rivalOptions, this.choices);
+  };
+
   render() {
-    const { atacante } = this.state;
-    const { team, escudo } = this.props;
+    const { atacante, atacanteRival } = this.state;
+    const { team, escudo, rivals, escudoRival } = this.props;
 
     return (
       <div className="step">
         <h2>Elegir Atacante </h2>
         {this.printChoices()}
         <h3>Elige un atacante del rival contra tu escudo ({team[escudo]})</h3>
-        <Select2 name="atacante" value={atacante} data={this.getList()} onChange={this.handleChange} />
+        <Select2 name="atacante" value={atacante} data={this.getOptionList()} onChange={this.handleChange} />
         <br />
         <br />
-        <button type="button" onClick={this.props.back} style={{ marginRight: "20%" }}>
-          Back
+        <h3>Elección del rival para su escudo ({rivals[escudoRival]})</h3>
+        <Select2
+          name="atacanteRival"
+          value={atacanteRival}
+          data={this.getRivalOptions()}
+          onChange={this.handleChange}
+        />
+        <br />
+        <br />
+        <button type="button" onClick={this.goNext} disabled={!atacante || !atacanteRival}>
+          Next
         </button>
       </div>
     );

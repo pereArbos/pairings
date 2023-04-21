@@ -4,27 +4,60 @@ import MatrixFiller from "./views/MatrixFiller";
 import Step1 from "./views/Step1";
 import Step2 from "./views/Step2";
 import Step3 from "./views/Step3";
+import Step4 from "./views/Step4";
+import Step5 from "./views/Step5";
 
 import "./App.css";
 
-const steps = [MatrixFiller, Step1, Step2, Step3];
-const numPlayers = 4;
-const initValues = [
-  [3, 3, 3, 3],
-  [3, 3, 3, 3],
-  [3, 3, 3, 3],
-  [3, 3, 3, 3],
+const matrix1 = [
+  [6, 4, 6, 2, 5, 3],
+  [3, 2, 5, 3, 5, 5],
+  [5, 2, 4, 3, 6, 3],
+  [3, 3, 4, 5, 4, 4],
+  [4, 3, 3, 5, 5, 5],
+  [3, 5, 2, 4, 5, 5],
 ];
+
+const matrix = [
+  [5, 4, 5, 3, 5, 5],
+  [1, 2, 3, 4, 6, 6],
+  [5, 2, 5, 4, 6, 6],
+  [3, 3, 2, 5, 4, 2],
+  [4, 3, 4, 3, 6, 6],
+  [2, 5, 3, 4, 4, 4],
+];
+
+const matrix3 = [
+  [4, 3, 6, 4, 2, 2],
+  [6, 3, 4, 5, 1, 5],
+  [3, 3, 4, 3, 5, 2],
+  [7, 6, 5, 3, 3, 6],
+  [5, 4, 6, 2, 4, 6],
+  [6, 2, 4, 3, 2, 5],
+];
+
+const matrix4 = [
+  [5, 5, 1, 2, 3, 4],
+  [3, 6, 3, 4, 6, 5],
+  [7, 4, 2, 5, 4, 5],
+  [5, 3, 3, 5, 3, 2],
+  [4, 3, 5, 5, 6, 5],
+  [5, 1, 4, 3, 3, 5],
+];
+
+const steps = [MatrixFiller, Step1, Step2, Step3, Step4, Step5];
+const numPlayers = 6;
+const initValues = matrix1;
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 0,
+      step: 1,
       numPlayers,
       matrix: initValues,
-      team: ["Adeptus Custodes", "Chaos Daemons", "Craftworlds", "Tau Empire"],
-      rivals: ["", "", "", ""],
+      team: ["A", "B", "C", "D", "E", "F"],
+      rivals: ["Z", "Y", "X", "W", "V", "U"],
     };
   }
 
@@ -34,11 +67,11 @@ export default class App extends React.Component {
     });
   };
 
-  prevStep = () => {
+  /* prevStep = () => {
     this.setState((prevState) => {
       return { step: prevState.step - 1 };
     });
-  };
+  }; */
 
   render() {
     const StepCmp = steps[this.state.step];

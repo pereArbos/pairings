@@ -1,7 +1,7 @@
 import React from "react";
 import Select2 from "react-select2-wrapper";
 
-import { discardChoices } from "../algorithm";
+import { getPairs, attackerChoices } from "../algorithm";
 
 export default class Step2 extends React.Component {
   constructor(props) {
@@ -16,10 +16,10 @@ export default class Step2 extends React.Component {
   }
 
   componentDidMount() {
-    const { matrix, escudo, escudoRival } = this.props;
+    const { matrix, escudo, escudoRival, remaining } = this.state;
     const defenders = [parseInt(escudo, 10), parseInt(escudoRival, 10)];
 
-    this.choices = discardChoices(defenders, this.state.remaining, matrix);
+    this.choices = attackerChoices(defenders, remaining, matrix);
     this.forceUpdate();
   }
 
@@ -36,46 +36,67 @@ export default class Step2 extends React.Component {
     return this.state.remaining[1].map((id) => ({ id, text: this.props.rivals[id] }));
   };
 
-  printChoices = () => {
-    const players = this.getList();
-    return (this.choices || []).map((row, i) => {
-      return (
-        <div>
-          <span style={{ width: "200px", display: "inline-block" }}>{players[i].text}</span>
-          {row.map((value) => (
-            <span style={{ width: "50px", display: "inline-block" }}>{value}</span>
-          ))}
-        </div>
-      );
+  getPairOptions = (list, names) => {
+    return getPairs(list).map((pair) => `${names[pair[0]]} ${names[pair[1]]}`);
+  };
+
+  goNext = () => {
+    const { espada1, espada2, espadaRival1, espadaRival2 } = this.state;
+    const espadas = [espada1, espada2].map((item) => parseInt(item, 10));
+    const espadasRival = [espadaRival1, espadaRival2].map((item) => parseInt(item, 10));
+    this.setState({ espadas, espadasRival }, () => {
+      this.props.next({ ...this.state });
     });
   };
 
+  printChoices = () => {
+    const { remaining, team, rivals } = this.state;
+    const playerOptions = this.getPairOptions(remaining[0], team);
+    const rivalOptions = this.getPairOptions(remaining[1], rivals);
+    return [
+      <div>
+        <span style={{ width: "120px", display: "inline-block" }}></span>
+        {rivalOptions.map((item) => (
+          <span style={{ width: "120px", display: "inline-block" }}>{item}</span>
+        ))}
+      </div>,
+      (this.choices || []).map((row, i) => {
+        return (
+          <div>
+            <span style={{ width: "120px", display: "inline-block" }}>{playerOptions[i]}</span>
+            {row.map((value) => (
+              <span style={{ width: "120px", display: "inline-block" }}>{value}</span>
+            ))}
+          </div>
+        );
+      }),
+    ];
+  };
+
   render() {
-    const { descarte, descarteRival } = this.state;
+    const { espada1, espada2, espadaRival1, espadaRival2 } = this.state;
     const { team, rivals, escudo, escudoRival } = this.props;
+    const playerList = this.getList();
+    const rivalList = this.getRivalList();
+    const disableNext = !espada1 || !espada2 || !espadaRival1 || !espadaRival2;
 
     return (
       <div className="step">
-        <h2>Elegir Descarte (los dos restantes serán los atacantes)</h2>
-        <h3>Tu descarte contra el escudo del rival ({rivals[escudoRival]})</h3>
-        <Select2 name="descarte" value={descarte} data={this.getList()} onChange={this.handleChange} />
-        <br />
-        <br />
+        <h2>Elegir Espadas</h2>
         {this.printChoices()}
-        <h3>Descarte del rival (tu escudo: {team[escudo]})</h3>
-        <Select2 name="descarteRival" value={descarteRival} data={this.getRivalList()} onChange={this.handleChange} />
+        <h3>Tus Espadas contra el escudo del rival ({rivals[escudoRival]})</h3>
+        <Select2 name="espada1" value={espada1} data={playerList} onChange={this.handleChange} />
+        <br />
+        <Select2 name="espada2" value={espada2} data={playerList} onChange={this.handleChange} />
         <br />
         <br />
-        <button type="button" onClick={this.props.back} style={{ marginRight: "20%" }}>
-          Back
-        </button>
-        <button
-          type="button"
-          disabled={!descarte || !descarteRival}
-          onClick={() => {
-            this.props.next({ ...this.state });
-          }}
-        >
+        <h3>Espadas del rival (tu escudo: {team[escudo]})</h3>
+        <Select2 name="espadaRival1" value={espadaRival1} data={rivalList} onChange={this.handleChange} />
+        <br />
+        <Select2 name="espadaRival2" value={espadaRival2} data={rivalList} onChange={this.handleChange} />
+        <br />
+        <br />
+        <button type="button" disabled={disableNext} onClick={this.goNext}>
           Next
         </button>
       </div>
