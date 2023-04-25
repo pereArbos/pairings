@@ -1,36 +1,38 @@
 import React from "react";
 import Select2 from "react-select2-wrapper";
 
-import { getAverage } from "../pressets";
+import { getAverage, generalMatrix } from "../pressets";
 
 const topValue = 7;
 const factions = [
-  "ASor",
-  "ACus",
-  "Mech",
-  "Eld",
+  "SOR",
+  "CUS",
+  "MEC",
+  "ELD",
   "GI",
   "BT",
   "BA",
-  "Dem",
+  "DEM",
   "CK",
   "CSM",
   "DA",
   "DG",
   "DW",
-  "Druk",
+  "DRU",
   "GSC",
   "GK",
-  "Har",
   "IK",
-  "Nec",
-  "Ork",
-  "Tau",
+  "NEC",
+  "ORK",
+  "TAU",
   "TS",
-  "Nyd",
+  "NYD",
   "SM",
   "SW",
   "WE",
+  "SAL",
+  "LOV",
+  "IH",
 ];
 
 export default class MatrixFiller extends React.Component {
@@ -58,11 +60,28 @@ export default class MatrixFiller extends React.Component {
 
   handleChange = (e, i) => {
     const { name, value } = e.target;
+    if (name === "rivals") this.updateValues(value, i);
     this.setState((prevState) => {
       const newList = [...prevState[name]];
       newList[i] = value;
       return { [name]: newList };
     });
+  };
+
+  updateValues = (faction, column) => {
+    console.log("hola wenas", faction, column);
+    this.setState(
+      (prevState) => {
+        const newValues = [...prevState.matrix];
+        [...Array(newValues.length).keys()].forEach((i) => {
+          newValues[i][column] = generalMatrix[faction] ? generalMatrix[faction][i] : 4;
+        });
+        return { matrix: newValues };
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
   };
 
   changeNum = (sign, i, j) => {

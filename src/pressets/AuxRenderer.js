@@ -6,7 +6,7 @@ export function renderChoices(playerOptions, rivalOptions, choices) {
       <span style={{ width: "80px", display: "inline-block" }}></span>
       {rivalOptions.map((item) => (
         <span style={{ width: "80px", display: "inline-block" }}>
-          <img style={{ width: "40px" }} src={require(`../armyIcons/${item.text}.png`)} />
+          <img alt={item.text} style={{ width: "40px" }} src={require(`../armyIcons/${item.text}.png`)} />
         </span>
       ))}
     </div>,
@@ -14,7 +14,11 @@ export function renderChoices(playerOptions, rivalOptions, choices) {
       return (
         <div>
           <span style={{ width: "80px", display: "inline-block" }}>
-            <img style={{ width: "40px" }} src={require(`../armyIcons/${playerOptions[i].text}.png`)} />
+            <img
+              alt={playerOptions[i].text}
+              style={{ width: "40px" }}
+              src={require(`../armyIcons/${playerOptions[i].text}.png`)}
+            />
           </span>
           {row.map((value) => (
             <span style={{ width: "80px", display: "inline-block" }}>{value}</span>

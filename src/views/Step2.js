@@ -61,7 +61,7 @@ export default class Step2 extends React.Component {
           return (
             <span style={{ width: "100px", display: "inline-block" }}>
               {rivalArmies.map((army) => (
-                <img style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
+                <img alt={army} style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
               ))}
             </span>
           );
@@ -73,7 +73,7 @@ export default class Step2 extends React.Component {
           <div>
             <span style={{ width: "100px", display: "inline-block" }}>
               {armies.map((army) => (
-                <img style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
+                <img alt={army} style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
               ))}
             </span>
             {row.map((value) => (

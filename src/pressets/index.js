@@ -1,3 +1,21 @@
+export const generalMatrix = {
+  GI: [3, 4, 3, 4, 5, 4],
+  CUS: [6, 5, 6, 5, 5, 2],
+  IK: [6, 3, 4, 6, 5, 4],
+  IH: [3, 4, 3, 4, 5, 4],
+  DA: [5, 4, 3, 4, 5, 4],
+  BA: [5, 5, 6, 5, 6, 3],
+  SAL: [3, 5, 3, 4, 4, 4],
+  DEM: [3, 4, 3, 2, 3, 4],
+  TS: [4, 5, 4, 5, 3, 4],
+  WE: [4, 4, 4, 4, 4, 3],
+  ELD: [5, 5, 3, 3, 4, 4],
+  GSC: [4, 4, 4, 4, 4, 4],
+  ORK: [5, 3, 2, 3, 3, 3],
+  TAU: [6, 6, 3, 4, 6, 4],
+  LOV: [4, 5, 6, 4, 4, 4],
+};
+
 export function getAverage(matrix) {
   const numPlayers = matrix.length;
   const list = [...Array(numPlayers).keys()];
