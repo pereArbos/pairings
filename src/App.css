@@ -26,7 +26,7 @@ button:hover {
   border: 1px solid black;
   height: 90px;
   width: 19vw;
-  max-width: 180px;
+  max-width: 150px;
   position: relative;
 
   display: inline-block;
@@ -93,4 +93,6 @@ button:hover {
 
 .button-footer {
   margin-bottom: 10px;
+  height: 30px;
+  width: 60px;
 }

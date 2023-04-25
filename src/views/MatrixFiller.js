@@ -141,6 +141,7 @@ export default class MatrixFiller extends React.Component {
         </label>
         <button
           type="button"
+          className="button-footer"
           disabled={this.state.rivals.filter((item) => item && item.length).length < 4}
           onClick={() => {
             this.props.next({ ...this.state });
