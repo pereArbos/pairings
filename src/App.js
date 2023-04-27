@@ -12,23 +12,23 @@ import "./App.css";
 const steps = [MatrixFiller, Step1, Step2, Step3, Step4, Step5];
 const numPlayers = 6;
 const initvalues = [
-  [4, 4, 4, 4, 4, 4],
-  [4, 4, 4, 4, 4, 4],
-  [4, 4, 4, 4, 4, 4],
-  [4, 4, 4, 4, 4, 4],
-  [4, 4, 4, 4, 4, 4],
-  [4, 4, 4, 4, 4, 4],
+  [5, 5, 3, 6, 3, 4],
+  [5, 3, 4, 4, 3, 4],
+  [4, 4, 2, 3, 3, 5],
+  [4, 5, 3, 4, 3, 5],
+  [4, 5, 4, 4, 3, 4],
+  [3, 5, 3, 2, 5, 5],
 ];
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 0,
+      step: 1,
       numPlayers,
       matrix: initvalues,
-      team: ["GSC", "WE", "DA", "TS", "ELD", "DEM"],
-      rivals: ["NEC", "DEM", "ELD", "GI", "IK", "GSC"],
+      team: ["GSC", "DEM", "WE", "DA", "ELD", "TS"],
+      rivals: ["GSC", "IK", "GI", "ELD", "DEM", "NEC"],
     };
   }
 
@@ -38,11 +38,11 @@ export default class App extends React.Component {
     });
   };
 
-  /* prevStep = () => {
+  prevStep = () => {
     this.setState((prevState) => {
       return { step: prevState.step - 1 };
     });
-  }; */
+  };
 
   render() {
     const StepCmp = steps[this.state.step];

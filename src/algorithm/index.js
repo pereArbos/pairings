@@ -64,14 +64,17 @@ function getSumm(choices) {
   return sum;
 }
 
-export function solveGame(choices) {
-  const choiceIdxs = [...Array(choices.length).keys()];
-  const filtered = choiceIdxs.filter((i) => !isOutclassed(choices[i], choices));
-  console.log(filtered);
+export function pseudoSolve(choices) {
+  const rows = [...Array(choices.length).keys()];
+  console.log(choices, rows);
+  const redRows = rows.filter((row) => !isOutclassed(choices[row], choices));
+  const redColumns = [...worstTotalColumns(rows, choices), ...worstBestColumns(rows, choices)];
+  const greenRows = bestWorstRows(choices);
+  return { redRows, redColumns, greenRows };
 }
 
 function isOutclassed(row, matrix) {
-  let outClassed = false;
+  let outClassed = true;
   matrix.forEach((row2) => {
     let noneLower = true;
     let allEqual = true;
@@ -79,9 +82,57 @@ function isOutclassed(row, matrix) {
       if (value < row[idx]) noneLower = false;
       if (value !== row[idx]) allEqual = false;
     });
-    if (noneLower && !allEqual) outClassed = true;
+    if (noneLower && !allEqual) outClassed = false;
   });
   return outClassed;
+}
+
+function worstTotalColumns(columns, matrix) {
+  let total = 100000;
+  let worstColumns = [];
+  columns.forEach((idx) => {
+    let columnTotal = 0;
+    matrix.forEach((row) => {
+      columnTotal += row[idx];
+    });
+    if (columnTotal < total) {
+      total = columnTotal;
+      worstColumns = [idx];
+    } else if (columnTotal <= total + 2) worstColumns.push(idx);
+  });
+  return worstColumns;
+}
+
+function worstBestColumns(columns, matrix) {
+  let worstBest = 100000;
+  let worstColumns = [];
+  columns.forEach((idx) => {
+    let columnBest = 0;
+    matrix.forEach((row) => {
+      if (row[idx] > columnBest) columnBest = row[idx];
+    });
+    if (columnBest < worstBest) {
+      worstBest = columnBest;
+      worstColumns = [idx];
+    } else if (columnBest === worstBest) worstColumns.push(idx);
+  });
+  return worstColumns;
+}
+
+function bestWorstRows(matrix) {
+  let bestWorst = 0;
+  let bestRows = [];
+  matrix.forEach((row, idx) => {
+    let rowWorst = 100000;
+    row.forEach((value) => {
+      if (value < rowWorst) rowWorst = value;
+    });
+    if (bestWorst < rowWorst) {
+      bestWorst = rowWorst;
+      bestRows = [idx];
+    } else if (bestWorst === rowWorst) bestRows.push(idx);
+  });
+  return bestRows;
 }
 
 export function discardChoices(defenders, remaining, matrix) {

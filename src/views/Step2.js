@@ -1,25 +1,30 @@
 import React from "react";
 import Select2 from "react-select2-wrapper";
 
-import { getPairs, attackerChoices } from "../algorithm";
+import { getPairs, attackerChoices, pseudoSolve } from "../algorithm";
 
 export default class Step2 extends React.Component {
   constructor(props) {
     super(props);
-    const { numPlayers, escudo, escudoRival } = props;
+    const { numPlayers, escudo, escudoRival, team, rivals } = props;
     const numArray = [...Array(numPlayers).keys()];
     const remaining = [];
     remaining.push(numArray.filter((player) => player != escudo));
     remaining.push(numArray.filter((player) => player != escudoRival));
 
-    this.state = { ...props, remaining };
+    const playerOptions = this.getPairOptions(remaining[0], team);
+    const rivalOptions = this.getPairOptions(remaining[1], rivals);
+
+    this.state = { ...props, remaining, playerOptions, rivalOptions };
   }
 
   componentDidMount() {
     const { matrix, escudo, escudoRival, remaining } = this.state;
     const defenders = [parseInt(escudo, 10), parseInt(escudoRival, 10)];
 
-    this.choices = attackerChoices(defenders, remaining, matrix);
+    const choices = attackerChoices(defenders, remaining, matrix);
+    this.choicesHelp = pseudoSolve(choices);
+    this.choices = choices;
     this.forceUpdate();
   }
 
@@ -50,16 +55,16 @@ export default class Step2 extends React.Component {
   };
 
   printChoices = () => {
-    const { remaining, team, rivals } = this.state;
-    const playerOptions = this.getPairOptions(remaining[0], team);
-    const rivalOptions = this.getPairOptions(remaining[1], rivals);
+    const { playerOptions, rivalOptions } = this.state;
+    const { redRows = [], redColumns = [], greenRows = [] } = this.choicesHelp || {};
     return [
       <div>
-        <span style={{ width: "100px", display: "inline-block" }}></span>
-        {rivalOptions.map((item) => {
+        <span className="matrix-value-step2"></span>
+        {rivalOptions.map((item, j) => {
           const rivalArmies = item.split(" ");
+          const headerStyle = redColumns.includes(j) ? { backgroundColor: "#990000" } : {};
           return (
-            <span style={{ width: "100px", display: "inline-block" }}>
+            <span className="matrix-value-step2" style={headerStyle}>
               {rivalArmies.map((army) => (
                 <img alt={army} style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
               ))}
@@ -69,16 +74,23 @@ export default class Step2 extends React.Component {
       </div>,
       (this.choices || []).map((row, i) => {
         const armies = playerOptions[i].split(" ");
+        let rowStyle = greenRows.includes(i) ? { backgroundColor: "green" } : {};
+        rowStyle = redRows.includes(i) ? { backgroundColor: "#ff2200" } : rowStyle;
         return (
           <div>
-            <span style={{ width: "100px", display: "inline-block" }}>
+            <span className="matrix-value-step2" style={rowStyle}>
               {armies.map((army) => (
                 <img alt={army} style={{ width: "40px" }} src={require(`../armyIcons/${army}.png`)} />
               ))}
             </span>
-            {row.map((value) => (
-              <span style={{ width: "100px", display: "inline-block" }}>{value}</span>
-            ))}
+            {row.map((value, j) => {
+              const columnStyle = redColumns.includes(j) ? { backgroundColor: "#990000" } : rowStyle;
+              return (
+                <span className="matrix-value-step2" style={columnStyle}>
+                  {value}
+                </span>
+              );
+            })}
           </div>
         );
       }),
@@ -110,6 +122,9 @@ export default class Step2 extends React.Component {
         <br />
         <button className="button-footer" type="button" disabled={disableNext} onClick={this.goNext}>
           Next
+        </button>
+        <button className="button-footer" type="button" style={{ marginLeft: "50px" }} onClick={this.props.back}>
+          Back
         </button>
       </div>
     );
