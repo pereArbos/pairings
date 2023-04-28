@@ -17,14 +17,14 @@ const initvalues = [
   [4, 4, 2, 3, 3, 5],
   [4, 5, 3, 4, 3, 5],
   [4, 5, 4, 4, 3, 4],
-  [3, 5, 3, 2, 5, 5],
+  [5, 5, 5, 2, 5, 5],
 ];
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1,
+      step: 0,
       numPlayers,
       matrix: initvalues,
       team: ["GSC", "DEM", "WE", "DA", "ELD", "TS"],
